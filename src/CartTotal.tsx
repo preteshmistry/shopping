@@ -8,8 +8,9 @@ export interface ICartTotalProps {
 }
 
 export const CartTotal = ({cart, products}: ICartTotalProps) => {
-  const total = Object.keys(cart).reduce((currentTotal, productId) => { 
-    return currentTotal + (products.get(productId)?.price! * cart[productId]) 
+  const total = Object.entries(cart).reduce((currentTotal, [productId, qty]) => { 
+    const price = products.get(productId)?.price;
+    return price ? currentTotal + (price * qty) : currentTotal;
   }, 0);
 
   return (

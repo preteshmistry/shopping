@@ -13,11 +13,14 @@ export const CartContents = ({cart, products, onRemoveProduct}: ICartContentsPro
   return (
     <>
       <div style={{marginTop: 20, marginBottom: 5}}>Cart Contents</div>
-      {Object.keys(cart).map((productId) => {
-        const qty = cart[productId];
+      {Object.entries(cart).map(([productId, qty]) => {
         const product = products.get(productId);
-        const itemTotal = (qty * product?.price!);
-        return (<div key={productId}>{qty} X {product?.name} {displayPrice(itemTotal)} <button onClick={()=> onRemoveProduct(productId)}>Remove</button></div>)
+        if (product) {
+          const itemTotal = (qty * product.price);
+          return (<div key={productId}>{qty} X {product?.name} {displayPrice(itemTotal)} <button onClick={()=> onRemoveProduct(productId)}>Remove</button></div>)
+        } else {
+          return (<div key={productId}>Product '{productId}' no longer available <button onClick={()=> onRemoveProduct(productId)}>Remove</button></div>)
+        }
       })}
     </>
   )
